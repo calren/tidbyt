@@ -4,6 +4,14 @@ load("cache.star", "cache")
 
 RANDOM_QUOTE_URL = "https://zenquotes.io/api/random"
 
+QUOTE_START = base64.decode("""
+iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAAXNSR0IArs4c6QAAACtJREFUGFdjTJX//58BDcx+yMjISJQESCVMM4oOFAmQCnTjwHbAtCJLgiQAQcQYB2m3o44AAAAASUVORK5CYII=
+""")
+
+QUOTE_END = base64.decode("""
+iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAAXNSR0IArs4c6QAAACtJREFUGFdjTJX//58BDcx+yMjIiFMCphhZAVgHTgl0o0CqQYpR7IAJgiQAMcQYB7Mu/l0AAAAASUVORK5CYII=
+""")
+
 def main():
     rep = http.get(RANDOM_QUOTE_URL)
     if rep.status_code != 200:
@@ -20,11 +28,13 @@ def main():
           children = [
               render.Box(
                 padding = 3,
-                child = render.Marquee(height = 32, scroll_direction = "vertical",
+                child = render.Marquee(height = 28, scroll_direction = "vertical",
+                    child = render.Image(src=QUOTE_START)
                     child = render.WrappedText(
                         content = quote,)
                           )
                       )
+                    child = render.Image(src=QUOTE_END)
             ],
         )
     )

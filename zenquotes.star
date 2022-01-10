@@ -1,6 +1,7 @@
 load("render.star", "render")
 load("http.star", "http")
 load("cache.star", "cache")
+load("encoding/base64.star", "base64")
 
 RANDOM_QUOTE_URL = "https://zenquotes.io/api/random"
 
@@ -23,18 +24,22 @@ def main():
     cache.set("quote_author_rate_limit", str(author), ttl_seconds=21600)
 
     return render.Root(
-      delay=100,
+      delay=150,
       child = render.Column(
           children = [
               render.Box(
                 padding = 3,
                 child = render.Marquee(height = 28, scroll_direction = "vertical",
-                    child = render.Image(src=QUOTE_START)
-                    child = render.WrappedText(
-                        content = quote,)
-                          )
-                      )
-                    child = render.Image(src=QUOTE_END)
+                    child = render.Column(
+                    children = [
+                    render.Image(src=QUOTE_START),
+                    render.WrappedText(
+                        content = quote,),
+                    render.Image(src=QUOTE_END),
+                      ]
+                    )
+                  )
+                ),
             ],
         )
     )
